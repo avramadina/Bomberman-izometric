@@ -17,7 +17,7 @@ public class powerup_script : MonoBehaviour {
 
 	void Start () {
 	
-		powerup = (POWERUPS)Random.Range(0, 4);
+		powerup = (POWERUPS)Random.Range(0, 5);
 
 	
 		switch(powerup){
@@ -32,6 +32,9 @@ public class powerup_script : MonoBehaviour {
 			break;
 			case POWERUPS.SPEED:
 			curr = speed;
+			break;	
+			case POWERUPS.KICK:
+			curr = kick;
 			break;
 		}
 			//curr_position
