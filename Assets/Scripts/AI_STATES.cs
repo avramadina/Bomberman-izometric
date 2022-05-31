@@ -1,3 +1,4 @@
 public enum AI_STATES{
     DODGE, BOMB, FOLLOW, IDLE, CENTER
+
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -8,16 +9,16 @@ public class Ai_Controller : Controller
 public GameObject bombPrefab;
 private AI_STATES state = AI_STATES.IDLE;
 
-private bool dodge;
+private bool dodge; // avoid bombs
 
 public bool drop_bomb_on_player;
 
 public AI_MOVE_MODE move_mode;
 
 private bool on_bomb = false;
-private bool bomb;
-private bool powerup;
-private bool follow;
+private bool bomb; // drop bombs
+private bool powerup; // pick up powerup
+private bool follow; // follow other players to trap them
 
 private ArrayList wait_bombs = new ArrayList();
 private Vector3 next_pos;
@@ -35,11 +36,13 @@ private Rigidbody rigidBody;
  private Animator animator;
 private ArrayList detections;
 
+// Use this for initialization
 	void Start () {
         player = GetComponent<Player>();
         rigidBody = GetComponent<Rigidbody>();
          animator = transform.Find ("PlayerModel").GetComponent<Animator> ();
 
+        // some intresting variables to shift
         bomb = true;
         follow = true;
         powerup = true;
@@ -57,6 +60,7 @@ private ArrayList detections;
     }
 
     private bool old_bomb_collision(Vector3 pos_test){
+        // return true if colliding with an old bomb!
         if(wait_bombs.Count > 0){
         foreach(GameObject go in wait_bombs){
             if(go != null){
@@ -69,15 +73,15 @@ private ArrayList detections;
         return false;
     }
 
-
+	// Update is called once per frame
 	void Update () {
          animator.SetBool ("Walking", false);
 
         switch(state){
-            case AI_STATES.DODGE: 
+            case AI_STATES.DODGE: // move away from bomb
             move(next_dir, next_pos);
             break;
-            case AI_STATES.CENTER:
+            case AI_STATES.CENTER: // center to tile
             move(next_dir, Round(transform.position));
             break;
             case AI_STATES.FOLLOW:
@@ -92,13 +96,14 @@ private ArrayList detections;
            
             case AI_STATES.IDLE:
 
-           
+            /* When idle decide next move, see interrupt levels below */
+            //Do raycast in all 4 directions to see what we can do...
 
             detections = get_closest_collisions(transform.position);
             
-            
+            //1 avoid bomb
             if(dodge){
-                if(contains_tag(detections, "Bomb") || on_bomb){
+                if(contains_tag(detections, "Bomb") || on_bomb){// Detect if standing on a bomb instead
                      
                     on_bomb = false;
                     
@@ -116,12 +121,12 @@ private ArrayList detections;
                 }
             }
                 
-            
+            //2 pick up powerup, if accessable
             if(powerup){
                  if(contains_tag(detections, "powerup")){
                      foreach(dir_dist d in detections){
                          if(d.tag == "powerup"){
-                             path.Clear(); 
+                             path.Clear(); // currently removes the goal, maybe not the smartest idea
                              path.Add(transform.position + d.dir);
                             state = AI_STATES.FOLLOW;
                             break;            
@@ -131,7 +136,7 @@ private ArrayList detections;
              }
 
             
-            
+            //3 place bomb, if player or breakable, optimze
             if(bomb){
                 if(player.bombs != 0){
                     if(time_to_place_bomb()){
@@ -141,13 +146,13 @@ private ArrayList detections;
                 }
             }
             
-            
+            //4 Set a ai goal, a position the bot will try to reach
             if(follow){
-                if(path.Count == 0){ 
+                if(path.Count == 0){ // ready for next goal
                 
                  switch(move_mode){
                     case AI_MOVE_MODE.AGGRESSIVE:
-                        
+                        // find player
                         foreach(Player_Controller p in FindObjectsOfType<Player_Controller>()){
                                 if(p.isActiveAndEnabled){
                                      path  =  calculate_path_to(transform.position, Round(p.transform.position));
@@ -172,7 +177,8 @@ private ArrayList detections;
                 } else {
                   
                     if(Vector3.Distance(transform.position, (Vector3)path[0]) > 1){
-                        
+                        // this means we have dodged a bomb and dont have a continous path to goal
+                        // we should update path, but i will clear for now
                         path.Clear();
                     
                     } else {
@@ -185,7 +191,7 @@ private ArrayList detections;
             }
             
 
-            
+            //5 Center - center player to box to detect correctly!
             if(transform.position != Round(transform.position)){
                     state = AI_STATES.CENTER;   
             }
@@ -197,7 +203,7 @@ private ArrayList detections;
     private ArrayList calculate_next_closest_breakable(Vector3 position, ArrayList det)
     {
       
-        
+        /* Create an arraylist of size =1 that shows way to a breakable */
         ArrayList p = new ArrayList();
         dir_dist next = new dir_dist();
         bool next_set = false;
@@ -229,7 +235,8 @@ private ArrayList detections;
     }
 
   private ArrayList calculate_path_to(Vector3 startpos, Vector3 goal){
-        
+        // calculate a path between current pos and goal,
+        // save as arraylist
         bool done = false;
         ArrayList result = new ArrayList();
         Vector3 currentpos = startpos;
@@ -256,8 +263,8 @@ private ArrayList detections;
             }
 
             if(currentpos == old_pos){
-                
-                done = true; 
+                // no change!
+                done = true; // else endless loop
             }  
         }
         return result;
@@ -282,7 +289,9 @@ private ArrayList detections;
     }
 
     private ArrayList calculate_safe_position_path(Vector3 start_pos){
-    
+    // search all nodes for a 4:way crossing
+    // move towards it or the next best crossing
+    /* Calculate which one step to take. */
  
     ArrayList result = new ArrayList();
     Vector3 current_pos = start_pos;
@@ -297,7 +306,7 @@ private ArrayList detections;
         curr_det = get_closest_collisions(current_pos);
 
 
-        
+        // if done
         if(amount_usable_paths(curr_det) == 4){
             found_safe_pos = true; 
             break;
@@ -305,7 +314,7 @@ private ArrayList detections;
         
         bool got_dir = false;
 
-        
+        // get next direction
         foreach(dir_dist d in curr_det){
            if(d.dist >= 1 ){
                 if(!all_nodes.Contains(current_pos + d.dir)){
@@ -319,7 +328,7 @@ private ArrayList detections;
            }
         }
 
-        
+        // back in list
         if(!got_dir){
             if(result.Count > 1){
            result.RemoveAt(result.Count-1);
@@ -333,15 +342,16 @@ private ArrayList detections;
     }
 
     private void move_path(){
-         
+         // move along a path of vector3
+        // always do checks for bombs on the way and avoid
 
 
         if(path.Count != 0){
         
         Vector3 direction =  ((Vector3)path[0] - Round(transform.position)).normalized;
          
-            ArrayList temp = get_closest_collisions((Vector3) path[0]); 
-            ArrayList temp2 = get_closest_collisions((Vector3) transform.position); 
+            ArrayList temp = get_closest_collisions((Vector3) path[0]); // check bomb next
+            ArrayList temp2 = get_closest_collisions((Vector3) transform.position); // check collision next 
             bool temp2_res = false;
 
             foreach(dir_dist d in temp2){
@@ -366,7 +376,7 @@ private ArrayList detections;
                 state = AI_STATES.IDLE;
             }
         }
-         
+         // done!
         if(Vector3.Distance(transform.position, (Vector3) path[0]) == 0){
         
             path.RemoveAt(0);
@@ -382,7 +392,7 @@ private ArrayList detections;
    private void bomb_check(){
         if(dodge){
                    detections = get_closest_collisions(transform.position);
-                if(contains_tag(detections, "Bomb") || on_bomb){
+                if(contains_tag(detections, "Bomb") || on_bomb){// Detect if standing on a bomb instead
                      
                     on_bomb = false;
                       
@@ -394,7 +404,7 @@ private ArrayList detections;
    }
 
     private ArrayList calculate_escape_path(Vector3 bomb_pos, Vector3 start_pos){
-    
+    /* Calculate which one step to take. */
     ArrayList result = new ArrayList();
     Vector3 current_pos = start_pos;
     ArrayList all_nodes = new ArrayList();
@@ -404,7 +414,7 @@ private ArrayList detections;
 
     while(!found_safe_pos){
 
-        
+        // if done
         if(bomb_pos.x != current_pos.x && bomb_pos.z != current_pos.z){
             found_safe_pos = true; 
             break;
@@ -414,7 +424,7 @@ private ArrayList detections;
 
         bool got_dir = false;
 
-        
+        // get next direction
         foreach(dir_dist d in curr_det){
            if(d.dist >= 1  && !old_bomb_collision(current_pos+d.dir) ){
                 if(!all_nodes.Contains(current_pos + d.dir)){
@@ -428,7 +438,7 @@ private ArrayList detections;
            }
         }
 
-        
+        // back in list
         if(!got_dir){
             if(result.Count > 1){
            result.RemoveAt(result.Count-1);
@@ -463,7 +473,7 @@ private ArrayList detections;
     private void  dropBomb()
     {
         if (bombPrefab)
-        {
+        { //Check if bomb prefab is assigned first
        GameObject go = Instantiate(bombPrefab, new Vector3(Mathf.RoundToInt(transform.position.x), 
         bombPrefab.transform.position.y, Mathf.RoundToInt(transform.position.z)),
         bombPrefab.transform.rotation);
@@ -490,7 +500,7 @@ private ArrayList detections;
     }
 
     private void calculate_next_dodge_pos(ArrayList curr_det){
-    
+    /* Calculate which one step to take */
     dir_dist temp = new dir_dist();
     ArrayList det_array = new ArrayList();
 
@@ -504,7 +514,7 @@ private ArrayList detections;
         }
     counter++;    
 
-       
+    // get position with highest potential    
         foreach(dir_dist d in curr_det){
            
                 if(d.path_value > temp.path_value){
@@ -516,11 +526,11 @@ private ArrayList detections;
         next_dir = temp.dir;
 
        
-    
+    // check if bomb
     det_array = get_closest_collisions(next_pos);
     if(contains_tag(det_array, "Bomb") ){
 
-        
+        // update current list
         ArrayList new_array = new ArrayList();
         dir_dist t = new dir_dist();
          foreach(dir_dist d in curr_det){
@@ -535,20 +545,20 @@ private ArrayList detections;
         curr_det = new_array;
     } else {
     got_pos = true;
-    
+    // next_pos & next_dir -- updated 
     }
     }
     }
 
     private void move(Vector3 direction, Vector3 position){
 
-        
+        // move to exact location over deltatime
         Vector3 movePosition = Vector3.MoveTowards(transform.position, position, (player.moveSpeed/2) * Time.deltaTime);
 
-        
+        // Android don't like rigidbody.movement
         transform.position = movePosition;
 
-        
+        // player rotation
         if(direction == Vector3.forward){
             transform.rotation = Quaternion.Euler (0, 0, 0);
         } else if(direction == Vector3.back){
@@ -559,13 +569,13 @@ private ArrayList detections;
             transform.rotation = Quaternion.Euler (0, 90, 0);
         }
 
-        
+        // start animation
         animator.SetBool ("Walking", true);
 
-        
+        // done!
         if(Vector3.Distance(transform.position, position) == 0){
             
-             state = AI_STATES.IDLE; 
+             state = AI_STATES.IDLE; // ai idle 
             
 
         }
@@ -625,7 +635,7 @@ private ArrayList detections;
                     }
                 }
              
-             
+             // add to length
              i++;
             }
     

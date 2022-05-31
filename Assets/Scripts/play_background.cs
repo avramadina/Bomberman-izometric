@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class play_background : MonoBehaviour {
 
+	// Use this for initialization
 	void Start () {
 		
 	}
 	
+	// Update is called once per frame
 	void Update () {
 
 	}

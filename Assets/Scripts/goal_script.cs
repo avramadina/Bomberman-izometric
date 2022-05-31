@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class goal_script : MonoBehaviour {
 
+	// Use this for initialization
 	void Start () {
 		
 	}
-
+	
+	// Update is called once per frame
 	void Update () {
 		
 	}
@@ -21,7 +23,7 @@ public class goal_script : MonoBehaviour {
 	
         if (collision.collider.CompareTag ("Player"))
         {
-			
+			// set next level
 			Player p = collision.collider.GetComponent<Player>();
 			
 			 if(p.GetComponent<Player_Controller>().isActiveAndEnabled && !p.dead){
@@ -32,7 +34,7 @@ public class goal_script : MonoBehaviour {
 
 			fade_script fade = new fade_script();
 			
-			
+			// init fader
         foreach(fade_script f in FindObjectsOfType<fade_script>()){
             if(f.tag == "fader"){
                fade = f;
@@ -40,6 +42,7 @@ public class goal_script : MonoBehaviour {
                continue;
             }
         }
+			//if not done
 
 			// load map
 			     if (Application.CanStreamedLevelBeLoaded("Game"))

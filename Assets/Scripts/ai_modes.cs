@@ -1,3 +1,4 @@
-﻿public enum AI_MODES{
+﻿
+public enum AI_MODES{
 	FARM, KILL, DODGE
 }

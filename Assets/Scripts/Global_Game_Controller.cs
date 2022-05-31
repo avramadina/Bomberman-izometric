@@ -12,12 +12,10 @@ public class Global_Game_Controller : MonoBehaviour {
 	public GameObject map_parent;
 	public Map map;
 
-	
 	void Start () {
 
 		 Application.targetFrameRate = 30;
 
-		
 		 foreach(Text t in FindObjectsOfType<Text>()){
                 switch(t.tag){
                     case "enemies":
@@ -30,24 +28,24 @@ public class Global_Game_Controller : MonoBehaviour {
 		 }
 
 
+	
 			if(PlayerPrefs.GetInt("current_level").ToString().Length == 0){
 				 PlayerPrefs.SetInt("current_level", 1);
 				 }
 
 		int level = PlayerPrefs.GetInt("current_level");
-		PlayerPrefs.SetInt("current_level", 1);
 
-		/*if (level <= 8){
+		
+		if(level <= 8){
 			map =  gameObject.AddComponent<Map>();
 			map.construct(1+level,11,11 , map_parent);
 		} else {
 			map =  gameObject.AddComponent<Map>();
 			map.construct(1+level,11 +(level-8)*2,11+(level-8)*2 , map_parent);
 		}
-		*/
-		map = gameObject.AddComponent<Map>();
-		map.construct(1, 11, 11, map_parent);
 
+		
+		
 	}
 
 	public void update_labels(){
@@ -78,7 +76,6 @@ public class Global_Game_Controller : MonoBehaviour {
 	public void Restart(){
 
 
-	// get animation
 				fade_script fade = new fade_script();
 			// init fader
         foreach(fade_script f in FindObjectsOfType<fade_script>()){
@@ -89,10 +86,7 @@ public class Global_Game_Controller : MonoBehaviour {
             }
         }
 		
-		// reset values
 
-
-		// map
 				     if (Application.CanStreamedLevelBeLoaded("Game"))
      {
 		StartCoroutine(GameObject.FindObjectOfType<fade_script>().FadeAndLoadScene(fade_script.FadeDirection.In, "Game"));

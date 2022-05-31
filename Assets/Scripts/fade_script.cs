@@ -10,8 +10,8 @@ public Image fadeOutUIImage;
 public float fadeSpeed = 0.8f; 
 public enum FadeDirection
 {
-In, 
-Out 
+In, //Alpha = 1
+Out // Alpha = 0
 }
 #endregion
 #region MONOBHEAVIOR

@@ -1,6 +1,5 @@
 
 <<<<<<< HEAD
-<<<<<<< HEAD
 === Fri Apr  8 14:16:47 2022
 
 Packages were changed.
@@ -12,18 +11,13 @@ The following packages were added:
   com.unity.ads@3.4.9
   com.unity.analytics@3.3.5
 =======
-=======
->>>>>>> bdf42c939ae3aa4144ebd07a5ef0825cf1a0855d
 === Mon Mar 14 19:39:11 2022
 
 Packages were changed.
 Update Mode: mergeDefaultDependencies
 
 The following packages were added:
-<<<<<<< HEAD
 >>>>>>> 36c613172ad3b49bddc8d74eccaa0d4ddcd1300b
-=======
->>>>>>> bdf42c939ae3aa4144ebd07a5ef0825cf1a0855d
   com.unity.collab-proxy@1.2.16
   com.unity.ide.rider@1.1.4
   com.unity.ide.vscode@1.2.1
@@ -59,7 +53,6 @@ The following packages were added:
   com.unity.modules.wind@1.0.0
   com.unity.modules.xr@1.0.0
 <<<<<<< HEAD
-<<<<<<< HEAD
   com.unity.multiplayer-hlapi@1.0.6
   com.unity.purchasing@2.1.0
   com.unity.test-framework@1.1.16
@@ -68,13 +61,10 @@ The following packages were added:
   com.unity.ugui@1.0.0
   com.unity.xr.legacyinputhelpers@2.1.4
 =======
-=======
->>>>>>> bdf42c939ae3aa4144ebd07a5ef0825cf1a0855d
   com.unity.test-framework@1.1.16
   com.unity.textmeshpro@2.1.1
   com.unity.timeline@1.2.16
   com.unity.ugui@1.0.0
-<<<<<<< HEAD
 >>>>>>> 36c613172ad3b49bddc8d74eccaa0d4ddcd1300b
 
 === Sat Apr  9 16:50:23 2022
@@ -95,15 +85,8 @@ The following packages were updated:
   com.unity.textmeshpro from version 2.0.1 to 3.0.6
   com.unity.timeline from version 1.2.6 to 1.4.8
   com.unity.xr.legacyinputhelpers from version 2.1.4 to 2.1.8
-<<<<<<< Updated upstream
 
-=== Mon Apr 11 19:32:40 2022
-=======
-=======
->>>>>>> bdf42c939ae3aa4144ebd07a5ef0825cf1a0855d
-
-=== Tue Apr 12 15:31:25 2022
->>>>>>> Stashed changes
+=== Sun May 29 21:33:57 2022
 
 Packages were changed.
 Update Mode: updateDependencies

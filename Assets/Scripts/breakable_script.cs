@@ -8,16 +8,19 @@ public class breakable_script : MonoBehaviour {
 
 	public ParticleSystem explosion;
 
-
+	// Use this for initialization
 	void Start () {
 		 powerup_prefab = (GameObject) Resources.Load("PowerUp",typeof(GameObject));
     
     
 	}
 	
+	// Update is called once per frame
 	void Update () {
 		
 	}
+
+
 
 	  void OnCollisionEnter(Collision collision)
     

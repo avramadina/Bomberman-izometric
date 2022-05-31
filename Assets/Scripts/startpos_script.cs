@@ -7,7 +7,7 @@ public class startpos_script : MonoBehaviour {
 
 	public bool player_controller = false;
 	private GameObject player_prefab;
-	
+	// Use this for initialization
 	void Start () {
 		 player_prefab = (GameObject) Resources.Load("Player", typeof(GameObject));
 

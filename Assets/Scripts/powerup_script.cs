@@ -15,14 +15,18 @@ public class powerup_script : MonoBehaviour {
 
 	public POWERUPS powerup;
 
+	// Use this for initialization
 	void Start () {
 	
 		powerup = (POWERUPS)Random.Range(0, 5);
 
-	
+		// load prefab look
 		switch(powerup){
 			case POWERUPS.BOMB:
 			curr = bomb;
+			break;
+			case POWERUPS.KICK:
+			curr = kick;
 			break;
 			case POWERUPS.LIFE:
 			curr = life;
@@ -32,12 +36,9 @@ public class powerup_script : MonoBehaviour {
 			break;
 			case POWERUPS.SPEED:
 			curr = speed;
-			break;	
-			case POWERUPS.KICK:
-			curr = kick;
 			break;
 		}
-			//curr_position
+			// curr position
 		GameObject go =	Instantiate(curr, transform.position, Quaternion.identity) as GameObject;
 		go.GetComponent<Transform>().SetParent(this.transform);
 
@@ -81,7 +82,7 @@ public class powerup_script : MonoBehaviour {
 			break;
 		}
 		
-		if(player.GetComponent<Player_Controller>().isActiveAndEnabled){ 
+		if(player.GetComponent<Player_Controller>().isActiveAndEnabled){ // if human controlled
 		player.update_label(powerup);
 		}
 

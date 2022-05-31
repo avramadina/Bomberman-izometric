@@ -20,7 +20,7 @@ public class Mission_Text_Script : MonoBehaviour {
 	string secret_7 = " secret." ;
 	string s_7 =  "\n"+ "Cheers  Grebtsew";
 
-	
+	// Use this for initialization
 	void Start () {
 		Text t = GetComponent<Text>();
 		
@@ -82,7 +82,7 @@ public class Mission_Text_Script : MonoBehaviour {
 		return res;
 	}
 	
-	
+	// Update is called once per frame
 	void Update () {
 		
 	}

@@ -1,4 +1,32 @@
-
+﻿/*
+ * Copyright (c) 2017 Razeware LLC
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * Notwithstanding the foregoing, you may not use, copy, modify, merge, publish, 
+ * distribute, sublicense, create a derivative work, and/or sell copies of the 
+ * Software in any work that is designed, intended, or marketed for pedagogical or 
+ * instructional purposes related to programming, coding, application development, 
+ * or information technology.  Permission for such use, copying, modification,
+ * merger, publication, distribution, sublicensing, creation of derivative works, 
+ * or sale is expressly withheld.
+ *    
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 using UnityEngine;
 using System.Collections;
@@ -21,7 +49,8 @@ public GlobalStateManager globalManager;
     public ParticleSystem Explosion;
 
     public int bombs = 2;
-  
+    //Amount of bombs the player has left to drop, gets decreased as the player
+    //drops a bomb, increases as an owned bomb explodes
     public bool canKick = false;
     public int lifes = 1;
     public int explosion_power = 2;
@@ -71,10 +100,10 @@ public void update_label(POWERUPS powerup){
 
     }
 
- 
+    // Use this for initialization
     void Start ()
     {
-    
+        // init fader
         foreach(fade_script f in FindObjectsOfType<fade_script>()){
             if(f.tag == "fader"){
                 continue;
@@ -83,7 +112,7 @@ public void update_label(POWERUPS powerup){
             }
         }
 
-  
+        // init labels
         if(GetComponent<Player_Controller>().isActiveAndEnabled){
             foreach(Text t in FindObjectsOfType<Text>()){
                 switch(t.tag){
@@ -105,7 +134,7 @@ public void update_label(POWERUPS powerup){
                 }
             }
         }
-
+        //Cache the attached components for better performance and less typing
 
     }
 
@@ -142,7 +171,6 @@ public void update_label(POWERUPS powerup){
         if(!respawning){
           lifes--;
         
-        
         if(GetComponent<Player_Controller>().isActiveAndEnabled){
         update_label(POWERUPS.LIFE);
         }
@@ -167,7 +195,7 @@ public void update_label(POWERUPS powerup){
                 }
             respawning = true;
             StartCoroutine(respawn_wait());
-             } 
+             }
              
             Instantiate(Explosion,transform.position, Quaternion.identity);
          

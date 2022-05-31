@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Map : MonoBehaviour {
 
-
 public int width;
 public int height;
 
@@ -22,7 +21,8 @@ private int start_poses;
 private Blocks[,] array_representation;
 
 public void construct(int _start_poses, int x, int y, GameObject parent){
-  
+    
+    
     start_poses = _start_poses;
     Map_parent = parent;
     
@@ -39,7 +39,6 @@ public void construct(int _start_poses, int x, int y, GameObject parent){
     wall_prefab = (GameObject) Resources.Load("Wall",typeof(GameObject));
     
     
-
     if (x <= 2){
         x = 2;
     }
@@ -66,7 +65,7 @@ public bool is_walkable(int x, int y){
 }
 
 private void create_map(int x, int y){
-   
+    
     GameObject t = new_instance(1, 0, y/2 +  (y % 2), startpos_prefab);
     t.GetComponent<startpos_script>().player_controller = true;
 
@@ -77,7 +76,7 @@ private void create_map(int x, int y){
     array_representation[1, y-2] = Blocks.Startpos;
     
     if(start_poses > 2){
-    //add four more
+   
      new_instance(1, 0, 1, startpos_prefab);
     array_representation[1, 1] = Blocks.Startpos;
 
@@ -96,7 +95,7 @@ private void create_map(int x, int y){
         new_instance(x/2, 0, y-2, startpos_prefab);
     array_representation[(x)/2, y-2] = Blocks.Startpos;
     }
-    if(start_poses > 7){            // max 8 pers
+    if(start_poses > 7){           
         new_instance(x-2, 0, y/2, startpos_prefab);
     array_representation[x-2, y/2] = Blocks.Startpos;
     }
@@ -108,18 +107,17 @@ private void create_map(int x, int y){
     for(int i_x = 0; i_x < x; i_x++){
         for(int i_y = 0; i_y < y; i_y++){
 
-           
+        
             new_instance(i_x, -1, i_y, floor_prefab);
         
-           
             if(i_x == 0 || i_x == x -1 || i_y == 0 || i_y == y -1){
         
-            //door 
+          
             if(i_y == y/2 && i_x == x -1){
                 array_representation[i_x, i_y] = Blocks.Door;
                  new_instance(i_x, 0, i_y, door_prefab);
                  new_instance(i_x+1, 0, i_y, goal_prefab);
-                 // add paper powerup here
+              
             } else {
             array_representation[i_x, i_y] = Blocks.Wall;
             new_instance(i_x, 0, i_y, wall_prefab);
@@ -128,14 +126,14 @@ private void create_map(int x, int y){
 
             } else {
 
-                // add wall
+             
                  if(i_x % 2 == 0 && i_y % 2 == 0 && i_x != x-2 && i_y != y-2){
              
                  array_representation[i_x, i_y] = Blocks.Wall;
                  new_instance(i_x, 0, i_y, wall_prefab);
                  } else {
 
-                //breakables
+               
                 if(!start_next_to(i_x, i_y)){
                   array_representation[i_x, i_y] = Blocks.Breakable;
                 new_instance(i_x, 0, i_y, breakable_prefab);

@@ -7,8 +7,10 @@ public class camera_follow_player : MonoBehaviour {
 
 	public Player_Controller player_controller;
 
-    public Vector3 offset;         
+    public Vector3 offset;         //Private variable to store the offset distance between the player and camera
 
+
+	// Use this for initialization
 	void Start () {
 		
 
@@ -20,6 +22,7 @@ public class camera_follow_player : MonoBehaviour {
 		}
 	}
 	
+	// Update is called once per frame
 	void Update () {
 		if(player_controller != null)
 		 transform.position = player_controller.transform.position + offset;

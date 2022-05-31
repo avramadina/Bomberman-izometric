@@ -6,6 +6,7 @@ public class hide_on_start : MonoBehaviour {
 
 	public bool hide = true;
 
+	// Use this for initialization
 	void Start () {
 		if(hide){
 		gameObject.SetActive(false);
@@ -46,6 +47,7 @@ public class hide_on_start : MonoBehaviour {
 		Application.Quit();
 	}
 
+	// Update is called once per frame
 	void Update () {
 		
 	}
